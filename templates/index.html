@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinWise - Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        .modal {
+        display: none;
+        position: fixed;
+        z-index: 999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+        background-color: #fff;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 300px;
+        text-align: center;
+        border-radius: 8px;
+        box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .modal-buttons {
+        margin-top: 15px;
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .modal-buttons button {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    #confirm-signout {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    #cancel-signout {
+        background-color: #6c757d;
+        color: white;
+    }
+
+.toast-inline {
+  display: none;
+  background-color: #323232;
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  animation: fadeIn 0.4s ease;
+}
+
+.toast-inline button {
+  padding: 6px 12px;
+  background-color: #4caf50;
+  border: none;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.hidden {
+  display: none !important;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+
+
+
+
+
+
+        body {
+            background-color: #f8fafc;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            color: #1e293b;
+        }
+
+        header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        a {
+    text-decoration: none;
+}
+
+
+        nav {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2563eb;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #64748b;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: #2563eb;
+        }
+
+        nav a.active {
+            color: #2563eb;
+        }
+
+        main {
+            flex: 1;
+            max-width: 1440px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 2rem;
+        }
+
+        .welcome-banner {
+            text-align: left;
+            padding: 2rem;
+            background: linear-gradient(150deg, #000, #2563eb);
+            border-radius: 24px;
+            margin-bottom: 2rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .welcome-banner h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 800;
+        }
+
+        .welcome-banner p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+
+        .welcome-banner .quick-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .dashboard-summary {
+            color: white;
+        }
+
+        .dashboard-summary p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .dashboard-summary h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .feature-card h2 {
+            color: #2563eb;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .feature-card p {
+            color: #475569;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            min-height: 3rem;
+        }
+
+        .icon-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #eef2ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .icon-circle span {
+            font-size: 1.5rem;
+        }
+
+        .alert {
+            background-color: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .alert-icon {
+            margin-right: 0.5rem;
+            color: #f59e0b;
+            font-size: 1.2rem;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .profile-image {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: #475569;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #2563eb;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #2563eb;
+            color: #2563eb;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .chatbot-button {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #2563eb;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+
+        .chatbot-button:hover {
+            transform: scale(1.1);
+            background: #1d4ed8;
+        }
+
+        footer {
+            background-color: #132858;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
+        }
+
+        .footer-links a {
+            color: white;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">FinWise</div>
+            <ul>
+                <li><a href="{{ url_for('index') }}" class="active">Home</a></li>
+                <li><a href="{{ url_for('budgets') }}">Expenses&Budgets</a></li>
+                <li><a href="{{ url_for('reminders') }}">Bill Reminders</a></li>
+                <li><a href="{{ url_for('calculators') }}">Calculators</a></li>
+                <li><a href="{{ url_for('prediction') }}">Stock</a></li>
+                <li>
+                    <div class="user-profile">
+                        <button id="signout-btn" style="background: none; border: none; color: #007bff; cursor: pointer; font-size: 16px;">
+                            Sign Out
+                        </button>
+                    </div>
+                    
+                    <!-- Sign Out Modal -->
+                    <div id="signout-modal" class="modal">
+                        <div class="modal-content">
+                            <p>Are you sure you want to sign out?</p>
+                            <div class="modal-buttons">
+                                <button id="confirm-signout">Yes</button>
+                                <button id="cancel-signout">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Sign Out Modal -->
+
+  
+                    
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="welcome-banner">
+            <div>
+                <h1>Welcome to FinWise{% if full_name %}, {{ full_name }}{% endif %}</h1>
+
+                <p>Your personal finance assistant</p>
+            </div>
+
+            <div id="bill-toast" class="toast-inline hidden">
+                <span>You have pending bill reminders.</span>
+                <button id="view-reminders">View</button>
+            </div>
+            
+            
+        </section>
+
+        <div class="alert" id="bill-reminder-alert" style="display: none;">
+            <span class="alert-icon">⚠️</span>
+            <div id="bill-reminder-message"></div>
+        </div>
+
+        <div class="features-grid">
+
+            <a href="{{ url_for('chatbot') }}" class="feature-card">
+                <div class="icon-circle">
+                    <span>💬</span>
+                </div>
+                <h2>Financial Advisor</h2>
+                <p>Get personalized financial advice from our AI-powered assistant</p>
+                <div class="btn btn-outline">Get Advice</div>
+            </a>
+            <a href="{{ url_for('budgets') }}" class="feature-card">
+                <div class="icon-circle">
+                    <span>🎯📊</span>
+                </div>
+                <h2>Budgets & Expenses</h2>
+                <p>Manage your budgets and track expenses to stay on top of your finances</p>
+                <div class="btn btn-outline">Manage Finances</div>
+            </a>
+            
+            <a href="{{ url_for('reminders') }}" class="feature-card">
+                <div class="icon-circle">
+                    <span>🔔</span>
+                </div>
+                <h2>Bill Reminders</h2>
+                <p>Never miss a payment with automatic reminders for upcoming bills</p>
+                <div class="btn btn-outline">Set Reminders</div>
+            </a>
+
+            <a href="{{ url_for('calculators') }}" class="feature-card">
+                <div class="icon-circle">
+                    <span>🧮</span>
+                </div>
+                <h2>Financial Calculators</h2>
+                <p>Access a suite of calculators for loans, investments, taxes, and retirement planning.</p>
+                <div class="btn btn-outline">Use Calculators</div>    
+            </a>
+
+            <a href="{{ url_for('prediction') }}" class="feature-card">
+                <div class="icon-circle">
+                    <span>📈</span>
+                </div>
+                <h2>Stock</h2>
+                <p>Manage your investment portfolio and get personalized recommendations</p>
+                <div class="btn btn-outline">View Predictions</div>
+            </a>
+
+            <a href="{{ url_for('faq') }}" class="feature-card">
+                <div class="icon-circle">
+                    <span>📚</span>
+                </div>
+                <h2>Financial Education</h2>
+                <p>Improve your financial literacy with educational resources, articles, and guides.</p>
+                <div class="btn btn-outline">Learn More</div>            
+            </a>
+            
+        </div>
+
+    </main>
+
+    <a href="{{ url_for('chatbot') }}" class="chatbot-button" title="Chat with FinWise AI">💬</a>
+
+    <footer>
+        <p>&copy; 2025 FinWise. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="{{ url_for('privacy') }}">Privacy Policy</a>
+            <a href="{{ url_for('terms') }}">Terms of Service</a>
+            <a href="{{ url_for('contact') }}">Contact Us</a>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Initialize user info
+            function initializeUserInterface() {
+                const userData = sessionStorage.getItem('finwiseUserData');
+                if (userData) {
+                    const user = JSON.parse(userData);
+                    const profileInitial = document.getElementById('profile-initial');
+                    const userName = document.getElementById('user-name');
+    
+                    if (user.name) {
+                        profileInitial.textContent = user.name.charAt(0);
+                        userName.textContent = user.name;
+                    }
+    
+                    if (user.balance) {
+                        document.getElementById('current-balance').textContent = '$' + user.balance.toLocaleString();
+                    }
+    
+                    if (user.billReminders && user.billReminders.length > 0) {
+                        const billReminderAlert = document.getElementById('bill-reminder-alert');
+                        const billReminderMessage = document.getElementById('bill-reminder-message');
+    
+                        billReminderAlert.style.display = 'flex';
+                        billReminderMessage.innerHTML = `${user.billReminders[0].message} <a href="billreminders.html" style="color: #9a3412; font-weight: 500;">View details</a>`;
+                    }
+                }
+            }
+    
+            initializeUserInterface();
+    
+            // Show toast & notification for current user's reminders
+            const userEmail = sessionStorage.getItem("userEmail");
+            const reminders = JSON.parse(localStorage.getItem(`${userEmail}_monthlyReminders`) || '[]');
+    
+            // Check localStorage flag instead of sessionStorage
+            if (reminders.length > 0 && !localStorage.getItem(`${userEmail}_billsReminderShown`)) {
+                setTimeout(function () {
+                    // Show toast
+                    document.getElementById("bill-toast").classList.remove("hidden");
+    
+                    // Browser notification
+                    if (Notification.permission === "granted") {
+                        showBrowserNotification();
+                    } else if (Notification.permission !== "denied") {
+                        Notification.requestPermission().then(permission => {
+                            if (permission === "granted") {
+                                showBrowserNotification();
+                            }
+                        });
+                    }
+    
+                    // Set the flag in localStorage to ensure reminder is only shown once
+                    localStorage.setItem(`${userEmail}_billsReminderShown`, "true");
+                }, 1000);
+            }
+    
+            function showBrowserNotification() {
+                const notification = new Notification("Reminder", {
+                    body: "You have pending bill reminders. Click to review.",
+                    icon: "/static/icons/reminder.png"
+                });
+    
+                notification.onclick = function () {
+                    window.location.href = "{{ url_for('reminders') }}";
+                };
+            }
+    
+            // Handle toast "View" button
+            document.getElementById("view-reminders").addEventListener("click", function () {
+                document.getElementById("bill-toast").classList.add("hidden");
+                window.location.href = "{{ url_for('reminders') }}";
+            });
+    
+            // Signout modal logic
+            document.getElementById("signout-btn").addEventListener("click", function () {
+                document.getElementById("signout-modal").style.display = "block";
+            });
+    
+            document.getElementById("cancel-signout").addEventListener("click", function () {
+                document.getElementById("signout-modal").style.display = "none";
+            });
+    
+            document.getElementById("confirm-signout").addEventListener("click", function () {
+                // Clear toast flag for this user from localStorage
+                const userEmail = sessionStorage.getItem("userEmail");
+                if (userEmail) {
+                    localStorage.removeItem(`${userEmail}_billsReminderShown`);
+                }
+    
+                // Redirect to logout
+                window.location.href = "{{ url_for('logout') }}";
+            });
+        });
+    </script>
+    
+        
+</body>
+</html>

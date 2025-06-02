@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinWise - Stock Prediction</title>
+    <link rel="stylesheets" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background-color: #f8fafc;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            color: #1e293b;
+        }
+
+        header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2563eb;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #64748b;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: #2563eb;
+        }
+
+        nav a.active {
+            color: #2563eb;
+        }
+
+        main {
+            flex: 1;
+            max-width: 1440px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 2rem;
+        }
+
+        .max-w-7xl {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .prediction-header {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(150deg, #000, #2563eb);
+            border-radius: 24px;
+            margin-bottom: 3rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .prediction-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 800;
+        }
+
+        .prediction-header p {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .prediction-form {
+            max-width: 32rem;
+            margin: 0 auto;
+        }
+
+        .form-row {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (min-width: 640px) {
+            .form-row {
+                flex-direction: row;
+            }
+        }
+
+        .form-row input, 
+        .form-row select {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            border-radius: 9999px;
+            border: none;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .form-row input:focus,
+        .form-row select:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            border-radius: 9999px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+            text-align: center;
+            width: 100%;
+        }
+
+        @media (min-width: 640px) {
+            .btn {
+                width: auto;
+            }
+        }
+
+        .btn-primary {
+            background: white;
+            color: #2563eb;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        @media (min-width: 1024px) {
+            .grid-container {
+                grid-template-columns: 2fr 1fr;
+            }
+        }
+
+        .card {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .card-icon {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #dbeafe;
+            color: #2563eb;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .card-header-content h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .card-header-content p {
+            color: #64748b;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .stats-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .stat-box {
+            background-color: #f8fafc;
+            padding: 1rem;
+            border-radius: 0.75rem;
+        }
+
+        .stat-label {
+            color: #64748b;
+            margin-bottom: 0.25rem;
+            font-size: 0.875rem;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .positive {
+            color: #16a34a;
+        }
+
+        .negative {
+            color: #dc2626;
+        }
+
+        .neutral {
+            color: #ca8a04;
+        }
+
+        .sentiment-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-weight: 500;
+            margin-bottom: 2rem;
+        }
+
+        .factors-list {
+            list-style: none;
+        }
+
+        .factor-item {
+            background-color: #f8fafc;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: start;
+        }
+
+        .factor-bullet {
+            color: #2563eb;
+            margin-right: 0.5rem;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .recent-search-item {
+            padding: 1rem;
+            border-bottom: 1px solid #f1f5f9;
+            cursor: pointer;
+        }
+
+        .recent-search-item:hover {
+            background-color: #f8fafc;
+        }
+
+        .recent-search-item-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .recent-search-ticker {
+            font-weight: 500;
+        }
+
+        .recent-search-name {
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+
+        .tip-item {
+            background-color: #f8fafc;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .loading-icon {
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .center-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .status-icon {
+            width: 4rem;
+            height: 4rem;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 2rem;
+        }
+
+        .status-icon.info {
+            background-color: #dbeafe;
+            color: #2563eb;
+        }
+
+        .status-icon.error {
+            background-color: #fee2e2;
+            color: #dc2626;
+        }
+
+        .status-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .status-message {
+            color: #64748b;
+            max-width: 32rem;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">FinWise</div>
+            <ul>
+                <li><a href="{{ url_for('index') }}" class="active">Home</a></li>
+                <li><a href="{{ url_for('budgets') }}">Expenses & Budgets</a></li>
+                <li><a href="{{ url_for('reminders') }}">Bill Reminders</a></li>
+                <li><a href="{{ url_for('calculators') }}">Calculators</a></li>
+                <li><a href="{{ url_for('prediction') }}">Stock</a></li>
+                
+                <li>
+                    <div class="user-profile">
+                        <div class="profile-image" id="profile-initial"></div>
+                        <span id="user-name"></span>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="max-w-7xl">
+            <section class="prediction-header">
+                <h1>Stock Prediction</h1>
+                <h2>Model Accuracy : 80%</h2>
+                <br>
+                <p>Use our AI-powered analytics to predict stock price movements and get insights for your investment decisions</p>
+                <form id="predictionForm" class="prediction-form">
+                    <div class="form-row">
+                        <input 
+                            type="text" 
+                            id="tickerInput" 
+                            placeholder="Enter stock ticker (e.g. AAPL)" 
+                            required
+                        >
+                        <select id="timeframeSelect">
+                            <option value="2" >2 Days</option>
+                            <option value="3">3 Days</option>
+                            <option value="4">4 Days</option>
+                            <option value="5" selected>5 Days</option>
+                            <option value="6">6 Days</option>
+                            <option value="7">7 Days</option>
+                            <option value="8">8 Days</option>
+                            <option value="9">9 Days</option>
+                            <option value="10">10 Days</option>
+                        </select>
+                    </div>
+                    <button 
+                        type="submit" 
+                        id="predictButton" 
+                        class="btn btn-primary"
+                    >
+                        Predict Stock Movement
+                    </button>
+                </form>
+            </section>
+
+            <div class="grid-container">
+                <div>
+                    <!-- Prediction Result Card -->
+                    <div id="predictionResult" class="card hidden"></div>
+                    
+                    <!-- Loading State -->
+                    <div id="loadingState" class="card hidden">
+                        <div class="center-content">
+                            <div class="status-icon info loading-icon">⏳</div>
+                            <h3 class="status-title">Analyzing Market Data</h3>
+                            <p class="status-message">
+                                Our AI is processing historical data, market trends, and news sentiment to generate predictions...
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Error State -->
+                    <div id="errorState" class="card hidden">
+                        <div class="center-content">
+                            <div class="status-icon error">!</div>
+                            <h3 class="status-title" id="errorTitle">Stock not found</h3>
+                            <p class="status-message" id="errorMessage">
+                                Please check the ticker symbol and try again. Make sure you're using the correct stock symbol.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Empty State -->
+                    <div id="emptyState" class="card">
+                        <div class="center-content">
+                            <div class="status-icon info">📊</div>
+                            <h3 class="status-title">Ready to Analyze</h3>
+                            <p class="status-message">
+                                Enter a stock ticker symbol above to get AI-powered predictions and insights for your investment decisions.
+                            </p>
+                        </div>
+                        <canvas id="predictionChart"></canvas>
+                    </div>
+                </div>
+                
+                <div>
+                    <!-- Recent Searches Card -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Trending Headlines</h3>
+                        </div>
+                        <div id="recentSearches">
+                            <!-- Will be populated by JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <!-- Investment Tips Card -->
+                    <div class="card" style="margin-top: 2rem;">
+                        <div class="card-header">
+                            <h3>Investment Tips</h3>
+                        </div>
+                        <div class="card-body">
+                            <ul class="factors-list">
+                                <li class="tip-item">
+                                    Remember to diversify your investments across multiple sectors and asset classes.
+                                </li>
+                                <li class="tip-item">
+                                    Past performance is not indicative of future results. Always consider the risk factors.
+                                </li>
+                                <li class="tip-item">
+                                    Consider rupee-cost averaging instead of trying to time the market.
+                                </li>
+                                <li class="tip-item">
+                                    Keep a long-term perspective and don't react to short-term market fluctuations.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+    <script>
+        // Event listener for form submission
+        document.getElementById("predictionForm").addEventListener("submit", function(event) {
+            event.preventDefault();  
+    
+            const ticker = document.getElementById("tickerInput").value;  
+            const days = document.getElementById("timeframeSelect").value;  
+    
+            if (!ticker) {
+                alert("Please enter a stock ticker.");
+                return;
+            }
+    
+            document.getElementById("predictButton").innerHTML = "Predicting...";
+    
+            fetch("/api/predict", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ ticker: ticker, days: days })
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    // Pass ticker explicitly to displayPrediction and plotGraph
+                    displayPrediction(result, ticker);
+                    plotGraph(result.predictedPrices, ticker);
+                    
+                    // Fetch news for the ticker
+                    fetchNews(ticker); // Calling news fetching with ticker
+                } else {
+                    alert("Error: please try again" + result.error);
+                }
+    
+                document.getElementById("predictButton").innerHTML = "Predict Stock Movement";
+            })
+            .catch(error => {
+                alert("Error:  please try again" + error.message);
+                document.getElementById("predictButton").innerHTML = "Predict Stock Movement";
+            });
+        });
+    
+        // Function to fetch news for a company (ticker)
+        function fetchNews(ticker) {
+            fetch(`/api/news?company=${ticker}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(newsArticles => {
+                    if (newsArticles.error) {
+                        console.log("No news found.");
+                        return;
+                    }
+                    displayNews(newsArticles); // Pass the articles to display
+                })
+                .catch(error => {
+                    console.error("Error fetching news:", error);
+                });
+        }
+    
+        // Function to display fetched news
+        function displayNews(newsArticles) {
+            const recentSearchesDiv = document.getElementById("recentSearches");
+            recentSearchesDiv.innerHTML = "";  // Clear previous results
+    
+            newsArticles.forEach(article => {
+                let articleElement = document.createElement("div");
+                articleElement.style.padding = "8px";  // Add padding
+                articleElement.style.border = "1px solid #ddd";  // Light border
+                articleElement.style.marginBottom = "8px";  // Space between articles
+                articleElement.style.borderRadius = "5px";  // Rounded corners
+                articleElement.style.backgroundColor = "#f9f9f9";  // Light background
+    
+                articleElement.innerHTML = `
+                    <strong style="font-size: 14px;">${article.title}</strong><br>
+                    <a href="${article.url}" target="_blank" style="font-size: 12px; color: blue;">Read more</a>
+                `;
+    
+                recentSearchesDiv.appendChild(articleElement);
+            });
+        }
+    
+        // Function to display predictions
+        function displayPrediction(result, ticker) {
+            const emptyState = document.getElementById("emptyState");
+            const centerContent = emptyState.querySelector(".center-content");
+    
+            // Clear existing content
+            centerContent.innerHTML = "";
+    
+            // Check if ticker ends with .NS (Indian stock)
+            const isIndianStock = ticker.endsWith(".NS");
+    
+            // Style the prediction section
+            let predictionHtml = `
+                <h2 style="color: #007bff; font-size: 24px; text-align: center;">Prediction for ${ticker}</h2><br>
+            `;
+    
+            if (result.predictedPrices) {
+                predictionHtml += "<ul style='list-style-type: none; padding: 0; font-size: 20px; font-weight: bold;'>";
+                for (const [date, values] of Object.entries(result.predictedPrices)) {
+                    const currencySymbol = isIndianStock ? "₹" : "$"; // Use ₹ for Indian stocks, $ for US stocks
+    
+                    predictionHtml += `<li style="margin-bottom: 10px; text-align: center;">
+                        Date: ${date}, Predicted Price: ${currencySymbol}${values.predicted}
+                    </li>`;
+                }
+    
+                predictionHtml += "<br>The actual stock price is expected to fluctuate within the predicted range.</ul>";
+            } else {
+                predictionHtml += "<p>No predictions available.</p>";
+            }
+    
+            centerContent.innerHTML = predictionHtml;
+        }
+    
+        // Function to plot the graph
+        function plotGraph(predictions, ticker) {
+            const ctx = document.getElementById("predictionChart").getContext("2d");
+            if (window.stockChart) window.stockChart.destroy();
+    
+            const labels = Object.keys(predictions);
+            const predictedData = Object.values(predictions).map(p => p.predicted);
+            const lowData = Object.values(predictions).map(p => p.low);
+            const highData = Object.values(predictions).map(p => p.high);
+    
+            // Check if ticker ends with .NS (Indian stock)
+            const isIndianStock = ticker.endsWith(".NS");
+    
+            // Determine currency symbol
+            const currencySymbol = isIndianStock ? "₹" : "$";
+    
+            window.stockChart = new Chart(ctx, {
+                type: "line",
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: "",
+                            data: highData,
+                            backgroundColor: "rgba(144, 238, 144, 0.3)",
+                            borderWidth: 0,
+                            fill: "1"
+                        },
+                        {
+                            label: `Predicted Price (${currencySymbol})`,
+                            data: predictedData,
+                            borderColor: "blue",
+                            borderWidth: 2,
+                            fill: false
+                        },
+                        {
+                            label: "",
+                            data: lowData,
+                            backgroundColor: "rgba(255, 182, 193, 0.3)",
+                            borderWidth: 0,
+                            fill: "-1"
+                        },
+                        {
+                            label: `Lower Bound (${currencySymbol})`,
+                            data: lowData,
+                            borderColor: "darkred",
+                            borderWidth: 1,
+                            borderDash: [5, 5],
+                            fill: false
+                        },
+                        {
+                            label: `Upper Bound (${currencySymbol})`,
+                            data: highData,
+                            borderColor: "darkgreen",
+                            borderWidth: 1,
+                            borderDash: [5, 5],
+                            fill: false
+                        }
+                    ]
+                },
+                options: {
+                    plugins: {
+                        legend: {
+                            labels: {
+                                filter: (legendItem) => legendItem.text !== "" // Hide empty labels
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: "Date" } },
+                        y: { title: { display: true, text: `Price (${currencySymbol})` } }
+                    }
+                }
+            });
+        }
+    </script>
+    
+        
+</body>
+</html>

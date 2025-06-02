@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FinWise - Expense Tracker & Budget</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='budgets.css') }}" />
+    <script src="{{ url_for('static', filename='budgets.js') }}"></script>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <div class="logo">FinWise</div>
+        <ul>
+          <li><a href="{{ url_for('index') }}" class="active">Home</a></li>
+          <li><a href="{{ url_for('budgets') }}">Expenses&Budgets</a></li>
+          <li><a href="{{ url_for('reminders') }}">Bill Reminders</a></li>
+          <li><a href="{{ url_for('calculators') }}">Calculators</a></li>
+          <li><a href="{{ url_for('prediction') }}">Stock</a></li>
+          <li>
+            <div class="user-profile">
+              <div class="profile-image" id="profile-initial"></div>
+              <span id="user-name"></span>
+            </div>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <section class="dashboard-header">
+        <h1>Expense Tracker & Budget</h1>
+        <p>
+          Track your expenses and manage your budget to achieve your financial
+          goals
+        </p>
+      </section>
+
+      <section class="summary-stats">
+        <div class="stat-card">
+          <div class="stat-value" id="total-spent">₹0.00</div>
+          <div class="stat-label">Total Spent</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="total-budget">₹0.00</div>
+          <div class="stat-label">Total Budget</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="remaining-budget">₹0.00</div>
+          <div class="stat-label">Remaining</div>
+        </div>
+      </section>
+
+      <div class="expense-grid">
+        <div class="card">
+          <h2>Add Expense</h2>
+          <div class="expense-form">
+            <div class="form-group">
+              <label for="expense-description">Description</label>
+              <input
+                type="text"
+                id="expense-description"
+                placeholder="e.g. Grocery shopping"
+              />
+            </div>
+            <div class="form-group">
+              <label for="expense-amount">Amount (₹)</label>
+              <input
+                type="number"
+                id="expense-amount"
+                min="0"
+                step="0.01"
+                placeholder="0.00"
+              />
+            </div>
+            <div class="form-group">
+              <label for="expense-category">Category</label>
+              <select id="expense-category">
+                <option value="groceries">Groceries</option>
+                <option value="utilities">Utilities</option>
+                <option value="rent">Rent/Mortgage</option>
+                <option value="entertainment">Entertainment</option>
+                <option value="transportation">Transportation</option>
+                <option value="dining">Dining Out</option>
+                <option value="healthcare">Healthcare</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <button id="add-expense-btn" class="btn btn-primary">
+                Add Expense
+              </button>
+            </div>
+          </div>
+
+          <h2 style="margin-top: 2rem;">Recent Expenses</h2>
+          <div class="expense-list" id="expense-list">
+            <!-- Expenses will be added here dynamically -->
+            <div class="expense-item">
+              <div class="expense-details">
+                <span>Add your first expense</span>
+                <span class="expense-category">Get started</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>
+            Budget Management
+            <div class="card-header-actions">
+              <button id="edit-budget-btn" class="btn btn-outline">
+                Edit Budget
+              </button>
+            </div>
+          </h2>
+
+          <div id="budget-form" style="display: none;">
+            <div class="form-group">
+              <label for="budget-category">Category</label>
+              <select id="budget-category">
+                <option value="groceries">Groceries</option>
+                <option value="utilities">Utilities</option>
+                <option value="rent">Rent/Mortgage</option>
+                <option value="entertainment">Entertainment</option>
+                <option value="transportation">Transportation</option>
+                <option value="dining">Dining Out</option>
+                <option value="healthcare">Healthcare</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="budget-amount">Amount (₹)</label>
+              <input
+                type="number"
+                id="budget-amount"
+                min="0"
+                step="0.01"
+                placeholder="0.00"
+              />
+            </div>
+            <button id="set-budget-btn" class="btn btn-primary">
+              Set Budget
+            </button>
+          </div>
+
+          <div class="budget-bars" id="budget-bars">
+            <!-- Budget progress bars will be added here dynamically -->
+            <div class="budget-category">
+              <div class="budget-header">
+                <span class="budget-label">Set your first budget</span>
+                <span class="budget-values">
+                  Click "Edit Budget" to get started
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <p>&copy; 2025 FinWise. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="{{ url_for('privacy') }}">Privacy Policy</a>
+        <a href="{{ url_for('terms') }}">Terms of Service</a>
+        <a href="{{ url_for('contact') }}">Contact Us</a>
+      </div>
+    </footer>
+  </body>
+</html>

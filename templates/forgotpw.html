@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinWise - Forgot Password</title>
+    <style>
+
+        .resend-link.disabled {
+    pointer-events: none;
+    color: gray;
+    opacity: 0.6;
+    text-decoration: none;
+}
+
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background-color: #f8fafc;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            color: #1e293b;
+        }
+
+        header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2563eb;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #64748b;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: #2563eb;
+        }
+
+        nav a.active {
+            color: #2563eb;
+        }
+
+        main {
+            flex: 1;
+            max-width: 1440px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #forgot-password-section {
+            width: 100%;
+            max-width: 480px;
+        }
+
+        .forgot-password-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 2.5rem;
+            text-align: center;
+        }
+
+        .forgot-password-container h1 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: #1e293b;
+            font-weight: 700;
+        }
+
+        .forgot-password-container p {
+            margin-bottom: 2rem;
+            color: #64748b;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #64748b;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .btn {
+            display: inline-block;
+            width: 100%;
+            padding: 0.75rem 1.5rem;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn:hover {
+            background: #1d4ed8;
+        }
+
+        .form-footer {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        .form-footer a {
+            color: #2563eb;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .form-footer a:hover {
+            color: #1d4ed8;
+            text-decoration: underline;
+        }
+
+        footer {
+            background: #132858;
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid #e2e8f0;
+            color: white;
+        }
+
+        .footer-links {
+            margin-top: 1rem;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            color: #e2e8f0;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .alert {
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+
+        .alert-success {
+            background-color: #dcfce7;
+            color: #166534;
+            border: 1px solid #a7f3d0;
+        }
+
+        .alert-error {
+            background-color: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        .step-container {
+            display: none;
+        }
+
+        .step-container.active {
+            display: block;
+        }
+
+        .verification-inputs {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .verification-inputs input {
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            font-size: 1.5rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+        }
+
+        .verification-inputs input:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .timer {
+            margin: 1rem 0;
+            color: #64748b;
+        }
+
+        .resend-link {
+            display: inline-block;
+            margin-top: 0.5rem;
+            color: #2563eb;
+            cursor: pointer;
+        }
+
+        .resend-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            main {
+                padding: 1rem;
+            }
+
+            .forgot-password-container {
+                padding: 1.5rem;
+            }
+
+            .verification-inputs input {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">FinWise</div>
+            <ul>
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('login_page') }}">Login</a></li>
+                <li><a href="{{ url_for('signup') }}">Sign Up</a></li>
+
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="forgot-password-section">
+            <div class="forgot-password-container">
+                <h1>Reset Your Password</h1>
+                
+                <!-- Step 1: Email Input -->
+                <div id="step1" class="step-container active">
+                    <p>Enter your email address and we'll send you a verification code</p>
+                    <div id="email-alert" class="alert alert-success"></div>
+                    <form id="email-form">
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <button type="submit" class="btn">Send Verification Code</button>
+                        <div class="form-footer">
+                            <p>Remembered your password? <a href="{{ url_for('login_page') }}">Back to Login</a></p>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Step 2: Verification Code -->
+                <div id="step2" class="step-container">
+                    <p>We've sent a verification code to your email</p>
+                    <div id="verification-alert" class="alert"></div>
+                    <form id="verification-form">
+                        <div class="form-group">
+                            <label for="verification-code">Enter Verification Code</label>
+                            <div class="verification-inputs">
+                                <input type="text" maxlength="1" pattern="[0-9]" id="code-1" required>
+                                <input type="text" maxlength="1" pattern="[0-9]" id="code-2" required>
+                                <input type="text" maxlength="1" pattern="[0-9]" id="code-3" required>
+                                <input type="text" maxlength="1" pattern="[0-9]" id="code-4" required>
+                                <input type="text" maxlength="1" pattern="[0-9]" id="code-5" required>
+                                <input type="text" maxlength="1" pattern="[0-9]" id="code-6" required>
+                            </div>
+                        </div>
+                        <div class="timer">Resned code in: <span id="countdown">05:00</span></div>
+                        <button type="submit" class="btn">Verify Code</button>
+                        <div class="form-footer">
+                            <p>Didn't receive the code? <a href="#" id="resend-code" class="resend-link disabled">Resend Code</a></p>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Step 3: New Password -->
+                <div id="step3" class="step-container">
+                    <p>Create your new password</p>
+                    <div id="password-alert" class="alert"></div>
+                    <form id="password-form">
+                        <div class="form-group">
+                            <label for="new-password">New Password</label>
+                            <input type="password" id="new-password" name="new-password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirm-password">Confirm New Password</label>
+                            <input type="password" id="confirm-password" name="confirm-password" required>
+                        </div>
+                        <button type="submit" class="btn">Reset Password</button>
+                    </form>
+                </div>
+                
+                <div id="step4" class="step-container">
+                    <br>
+                    <p style="color: #4169E1;">Your password has been updated successfully. 🔐</p>
+                    <p style="color:#4169E1;">You can now log in using your new credentials and continue your journey with Finwise.</p>
+                    <p style="color: #4169E1;">Thank you for trusting us. Have a great day ahead!</p>
+                    <a href="{{ url_for('login_page') }}" class="btn">Back to Login</a>
+                </div>
+                
+                
+
+                 
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 FinWise. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="{{ url_for('privacy') }}">Privacy Policy</a>
+            <a href="{{ url_for('terms') }}">Terms of Service</a>
+            <a href="{{ url_for('contact') }}">Contact Us</a>
+            
+        </div>
+    </footer>
+
+    <script>
+        // Handle the flow between steps
+        function showStep(stepNumber) {
+            document.querySelectorAll('.step-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.getElementById(`step${stepNumber}`).classList.add('active');
+        }
+    
+        // Email form submission - Send OTP
+        document.getElementById("email-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const email = document.getElementById("email").value;
+            sessionStorage.setItem("resetEmail", email);
+            // Show success message
+            const alert = document.getElementById("email-alert");
+            alert.textContent = `Sending verification code to ${email}...`;
+            alert.classList.add("alert-info");
+            alert.style.display = "block";
+    
+            // AJAX call to backend to send OTP
+            fetch('/auth/send-otp', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email: email })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert.textContent = `Verification code sent to ${email}`;
+                    alert.classList.remove("alert-info");
+                    alert.classList.add("alert-success");
+                    setTimeout(() => {
+                        showStep(2);
+                        startCountdown();
+                        // Focus on first input
+                        document.getElementById("code-1").focus();
+                    }, 1500);
+                } else {
+                    alert.textContent = `Error: ${data.message}`;
+                    alert.classList.remove("alert-info");
+                    alert.classList.add("alert-danger");
+                }
+            })
+            .catch(error => {
+                alert.textContent = 'Something went wrong!';
+                alert.classList.remove("alert-info");
+                alert.classList.add("alert-danger");
+            });
+        });
+    
+        // Verification form submission - Verify OTP
+        document.getElementById("verification-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+    
+            // Get all verification code digits
+            const digits = [];
+            for (let i = 1; i <= 6; i++) {
+                digits.push(document.getElementById(`code-${i}`).value);
+            }
+            const code = digits.join('');
+    
+            // Show success/failure message
+            const alert = document.getElementById("verification-alert");
+    
+            // AJAX call to verify OTP
+            fetch('/auth/verify-otp', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email: document.getElementById("email").value, code: code })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert.textContent = "Verification successful!";
+                    alert.className = "alert alert-success";
+                    alert.style.display = "block";
+    
+                    setTimeout(() => {
+                        showStep(3);  // Move to password reset step
+                    }, 1000);
+                } else {
+                    alert.textContent = "Invalid OTP! Please try again.";
+                    alert.className = "alert alert-error";
+                    alert.style.display = "block";
+                }
+            })
+            .catch(error => {
+                alert.textContent = 'Error occurred while verifying OTP!';
+                alert.className = "alert alert-danger";
+                alert.style.display = "block";
+            });
+        });
+    
+        // Password form submission
+        // Password form submission
+document.getElementById("password-form").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const newPassword = document.getElementById("new-password").value;
+    const confirmPassword = document.getElementById("confirm-password").value;
+    const alert = document.getElementById("password-alert");
+
+    if (newPassword !== confirmPassword) {
+        alert.textContent = "Passwords do not match!";
+        alert.className = "alert alert-danger";
+        alert.style.display = "block";
+        return;
+    }
+
+    const email = sessionStorage.getItem("resetEmail"); // Retrieve the stored email
+
+    alert.textContent = "Password reset in progress...";
+    alert.className = "alert alert-info"; // Changed to info to reflect actual processing
+
+    // AJAX call to reset password
+    fetch('/auth/reset-password', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email: email, new_password: newPassword })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert.textContent = "Password reset successfully!";
+            alert.className = "alert alert-success";
+            setTimeout(() => {
+                showStep(4); // Success message
+            }, 1500);
+        } else {
+            alert.textContent = `Password reset failed: ${data.message}`;
+            alert.className = "alert alert-danger";
+        }
+    })
+    .catch(error => {
+        alert.textContent = 'Error occurred during password reset!';
+        alert.className = "alert alert-danger";
+    });
+});
+    
+        // Auto-focus for verification code inputs
+        const codeInputs = document.querySelectorAll('.verification-inputs input');
+        codeInputs.forEach((input, index) => {
+            input.addEventListener('input', function() {
+                if (this.value.length === this.maxLength) {
+                    if (index < codeInputs.length - 1) {
+                        codeInputs[index + 1].focus();
+                    }
+                }
+            });
+    
+            input.addEventListener('keydown', function(e) {
+                // Allow backspace to go to previous input
+                if (e.key === 'Backspace' && !this.value && index > 0) {
+                    codeInputs[index - 1].focus();
+                }
+            });
+        });
+
+
+        document.getElementById("resend-code").addEventListener("click", function (e) {
+    e.preventDefault();
+
+    if (this.classList.contains("disabled")) return;
+
+    const email = sessionStorage.getItem("resetEmail");
+    if (!email) {
+        alert("Email not found. Please go back and enter your email again.");
+        return;
+    }
+
+    fetch("/auth/send-otp", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+    })
+        .then((res) => res.json())
+        .then((data) => {
+            if (data.success) {
+                alert("New OTP sent to your email.");
+                startCountdown(); // restart the countdown
+                this.classList.add("disabled");
+                this.style.color = "gray";
+                setTimeout(() => {
+                    this.classList.remove("disabled");
+                    this.style.color = "#007BFF";
+                }, 5 * 60 * 1000);
+            } else {
+                alert("Failed to resend OTP. Please try again.");
+            }
+        })
+        .catch((err) => {
+            console.error(err);
+            alert("An error occurred.");
+        });
+});
+
+    
+        // Countdown timer for OTP
+        let timer = 1 * 60; // 5 minutes in seconds
+const countdownEl = document.getElementById("countdown");
+const resendLink = document.getElementById("resend-code");
+
+function startCountdown() {
+    // Initially disable the resend code link
+    resendLink.classList.add("disabled");
+    resendLink.style.pointerEvents = "none";
+
+    const interval = setInterval(() => {
+        const minutes = Math.floor(timer / 60);
+        let seconds = timer % 60;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        countdownEl.textContent = `${minutes}:${seconds}`;
+
+        if (--timer < 0) {
+            clearInterval(interval);
+            countdownEl.textContent = "now";
+            document.getElementById("resend-code").classList.remove("disabled");
+            // Enable the resend code link when the timer expires
+            resendLink.classList.remove("disabled");
+            resendLink.style.pointerEvents = "auto";
+        }
+    }, 1000);
+}
+
+startCountdown();
+
+    </script>
+    
+
+
+</body>
+</html>

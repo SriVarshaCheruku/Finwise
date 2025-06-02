@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinWise - Terms of Service</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background-color: #f8fafc;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            color: #1e293b;
+        }
+
+        header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2563eb;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #64748b;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: #2563eb;
+        }
+
+        nav a.active {
+            color: #2563eb;
+        }
+
+        main {
+            flex: 1;
+            max-width: 1440px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 2rem;
+        }
+
+        footer {
+            background-color: #132858;
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .footer-links {
+            margin-top: 1rem;
+        }
+
+        .footer-links a {
+            color: white;
+            margin: 0 1rem;
+            text-decoration: none;
+            opacity: 0.8;
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+
+        /* Terms of Service specific styles */
+        #terms-of-service {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        #terms-of-service h1 {
+            font-size: 2rem;
+            color: #1e293b;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .terms-content h2 {
+            font-size: 1.25rem;
+            color: #2563eb;
+            margin: 2rem 0 1rem;
+            font-weight: 600;
+        }
+
+        .terms-content h2:first-child {
+            margin-top: 0;
+        }
+
+        .terms-content p {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            color: #64748b;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            #terms-of-service {
+                padding: 2rem 1.5rem;
+            }
+
+            #terms-of-service h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">FinWise</div>
+            <ul>
+                <li><a href="{{ url_for('index') }}"">Home</a></li>
+                <li><a href="{{ url_for('login_page') }}">Login</a></li>
+                <li><a href="{{ url_for('signup') }}">Sign Up</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="terms-of-service">
+            <h1>Terms of Service</h1>
+            <div class="terms-content">
+                <h2>User Agreement</h2>
+                <p>By using FinWise, you agree to our terms and conditions of service. These terms constitute a legally binding agreement between you and FinWise regarding your use of our website and services.</p>
+                
+                <h2>Service Usage</h2>
+                <p>FinWise provides financial advice and tracking services. Users are responsible for their financial decisions. Our platform is designed to provide information and tools to help you make informed financial decisions, but we do not guarantee specific outcomes or results.</p>
+                
+                <h2>Account Responsibilities</h2>
+                <p>Users must maintain the confidentiality of their account and are responsible for all activities under their account. You agree to notify us immediately of any unauthorized use of your account or any other breach of security. We cannot and will not be liable for any loss or damage arising from your failure to comply with this requirement.</p>
+                
+                <h2>Limitation of Liability</h2>
+                <p>FinWise is not liable for any financial losses resulting from using our platform's recommendations. The information provided through our service is for general informational purposes only and is not intended as legal, tax, or investment advice. You should consult with a qualified professional for specific advice tailored to your situation.</p>
+                
+                <h2>Intellectual Property</h2>
+                <p>All content, features, and functionality of the FinWise platform, including but not limited to text, graphics, logos, icons, and images, are the exclusive property of FinWise and are protected by international copyright, trademark, and other intellectual property laws.</p>
+                
+                <h2>Privacy Policy</h2>
+                <p>Your use of FinWise is also governed by our Privacy Policy, which is incorporated by reference into these Terms of Service. Please review our Privacy Policy to understand our practices.</p>
+                
+                <h2>Changes to Terms</h2>
+                <p>We reserve the right to modify these terms at any time. If we make changes, we will provide notice by updating the date at the top of these terms and by maintaining a current version of the terms at finwise.com/terms.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 FinWise. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="{{ url_for('privacy') }}">Privacy Policy</a>
+            <a href="{{ url_for('terms') }}">Terms of Service</a>
+            <a href="{{ url_for('contact') }}">Contact Us</a>
+        </div>
+    </footer>
+</body>
+</html>

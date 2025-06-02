@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sign Out</title>
+</head>
+<body>
+    <h2>Are you sure you want to sign out?</h2>
+    <form action="{{ url_for('logout') }}" method="post">
+        <button type="submit">Yes, Sign Out</button>
+        <a href="{{ url_for('index') }}">Cancel</a>
+    </form>
+</body>
+</html>

@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinWise - Financial Calculators</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+       
+       * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background-color: #f8fafc;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            color: #1e293b;
+        }
+
+        header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2563eb;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #64748b;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: #2563eb;
+        }
+
+        nav a.active {
+            color: #2563eb;
+        }
+
+        main {
+            flex: 1;
+            max-width: 1440px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(150deg, #000, #2563eb);
+            border-radius: 24px;
+            margin-bottom: 3rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="rgba(255,255,255,0.1)"/></svg>');
+            opacity: 0.1;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 800;
+        }
+
+        .page-header p {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .calculator-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .calc-button {
+            background: white;
+            border: none;
+            padding: 1.5rem;
+            border-radius: 16px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            color: #1e293b;
+        }
+
+        .calc-button:hover {
+            background: #2563eb;
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        .calculator {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            margin-top: 2rem;
+            display: none;
+            transition: all 0.3s ease;
+        }
+
+        .calculator h2 {
+            color: #2563eb;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus {
+            border-color: #2563eb;
+            outline: none;
+        }
+
+        .calculate-btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            width: 100%;
+            transition: all 0.2s;
+        }
+
+        .calculate-btn:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .result {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: #f1f5f9;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .result h3 {
+            color: #2563eb;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .result p {
+            margin: 0.7rem 0;
+            font-size: 1.1rem;
+            color: #334155;
+        }
+
+        .chatbot-button {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #2563eb;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            z-index: 100;
+            transition: all 0.3s;
+            border: none;
+            font-size: 1.5rem;
+        }
+
+        .chatbot-button:hover {
+            transform: scale(1.1);
+            background: #1d4ed8;
+        }
+
+        @media (max-width: 1024px) {
+            .calculator-buttons {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .page-header {
+                padding: 2rem 1rem;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .calculator-buttons {
+                grid-template-columns: 1fr;
+            }
+
+            .calculator {
+                padding: 1.5rem;
+            }
+        }
+        footer {
+background-color: #132858;
+color: white;
+text-align: center;
+padding: 1.5rem;
+margin-top: 2rem;
+}
+.footer-links {
+margin-top: 1rem;
+}
+.footer-links a {
+color: white;
+margin: 0 10px;
+text-decoration: none;
+}
+.footer-links a:hover {
+text-decoration: underline;
+}
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">FinWise</div>
+            <ul>
+                <li><a href="{{ url_for('index') }}" class="active">Home</a></li>
+                <li><a href="{{ url_for('budgets') }}">Expenses&Budgets</a></li>
+                <li><a href="{{ url_for('reminders') }}">Bill Reminders</a></li>
+                <li><a href="{{ url_for('calculators') }}">Calculators</a></li>
+                <li><a href="{{ url_for('prediction') }}">Stock</a></li>
+                <li>
+                    <div class="user-profile">
+                        <div class="profile-image" id="profile-initial"></div>
+                        <span id="user-name"></span>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <h1>Financial Calculators</h1>
+            <p>Smart tools to help you make informed financial decisions</p>
+        </section>
+
+        <div class="calculator-buttons">
+            <button class="calc-button" onclick="showCalculator('compound')">Compound Interest Calculator</button>
+            <button class="calc-button" onclick="showCalculator('sip')">SIP Calculator</button>
+            <button class="calc-button" onclick="showCalculator('fd')">Fixed Deposit Calculator</button>
+            <button class="calc-button" onclick="showCalculator('loan')">Loan EMI Calculator</button>
+            <button class="calc-button" onclick="showCalculator('mf')">Mutual Fund Calculator</button>
+        </div>
+
+        <!-- Compound Interest Calculator -->
+        <div id="compound" class="calculator">
+            <h2>Compound Interest Calculator</h2>
+            <div class="form-group">
+                <label>Principal Amount (₹)</label>
+                <input type="number" id="ci-principal" placeholder="Enter principal amount">
+            </div>
+            <div class="form-group">
+                <label>Interest Rate (% per annum)</label>
+                <input type="number" id="ci-rate" placeholder="Enter interest rate">
+            </div>
+            <div class="form-group">
+                <label>Time Period (Years)</label>
+                <input type="number" id="ci-time" placeholder="Enter time period">
+            </div>
+            <button class="calculate-btn" onclick="calculateCompoundInterest()">Calculate</button>
+            <div id="ci-result" class="result"></div>
+        </div>
+
+        <!-- SIP Calculator -->
+        <div id="sip" class="calculator">
+            <h2>SIP Calculator</h2>
+            <div class="form-group">
+                <label>Monthly Investment (₹)</label>
+                <input type="number" id="sip-amount" placeholder="Enter monthly investment">
+            </div>
+            <div class="form-group">
+                <label>Expected Return Rate (% per annum)</label>
+                <input type="number" id="sip-rate" placeholder="Enter expected return rate">
+            </div>
+            <div class="form-group">
+                <label>Investment Period (Years)</label>
+                <input type="number" id="sip-time" placeholder="Enter investment period">
+            </div>
+            <button class="calculate-btn" onclick="calculateSIP()">Calculate</button>
+            <div id="sip-result" class="result"></div>
+        </div>
+
+        <!-- FD Calculator -->
+        <div id="fd" class="calculator">
+            <h2>Fixed Deposit Calculator</h2>
+            <div class="form-group">
+                <label>Principal Amount (₹)</label>
+                <input type="number" id="fd-principal" placeholder="Enter principal amount">
+            </div>
+            <div class="form-group">
+                <label>Interest Rate (% per annum)</label>
+                <input type="number" id="fd-rate" placeholder="Enter interest rate">
+            </div>
+            <div class="form-group">
+                <label>Time Period (Years)</label>
+                <input type="number" id="fd-time" placeholder="Enter time period">
+            </div>
+            <button class="calculate-btn" onclick="calculateFD()">Calculate</button>
+            <div id="fd-result" class="result"></div>
+        </div>
+
+        <!-- Loan EMI Calculator -->
+        <div id="loan" class="calculator">
+            <h2>Loan EMI Calculator</h2>
+            <div class="form-group">
+                <label>Loan Amount (₹)</label>
+                <input type="number" id="loan-amount" placeholder="Enter loan amount">
+            </div>
+            <div class="form-group">
+                <label>Interest Rate (% per annum)</label>
+                <input type="number" id="loan-rate" placeholder="Enter interest rate">
+            </div>
+            <div class="form-group">
+                <label>Loan Term (Years)</label>
+                <input type="number" id="loan-time" placeholder="Enter loan term">
+            </div>
+            <button class="calculate-btn" onclick="calculateLoanEMI()">Calculate</button>
+            <div id="loan-result" class="result"></div>
+        </div>
+
+        <!-- Mutual Fund Calculator -->
+        <div id="mf" class="calculator">
+            <h2>Mutual Fund Calculator</h2>
+            <div class="form-group">
+                <label>Investment Amount (₹)</label>
+                <input type="number" id="mf-amount" placeholder="Enter investment amount">
+            </div>
+            <div class="form-group">
+                <label>Expected Return Rate (% per annum)</label>
+                <input type="number" id="mf-rate" placeholder="Enter expected return rate">
+            </div>
+            <div class="form-group">
+                <label>Investment Period (Years)</label>
+                <input type="number" id="mf-time" placeholder="Enter investment period">
+            </div>
+            <button class="calculate-btn" onclick="calculateMF()">Calculate</button>
+            <div id="mf-result" class="result"></div>
+        </div>
+    </main>
+
+    <a href="{{ url_for('chatbot') }}" class="chatbot-button" title="Chat with FinWise AI">💬</a>
+
+    <script>
+        function showCalculator(type) {
+            // Hide all calculators
+            document.querySelectorAll('.calculator').forEach(calc => {
+                calc.style.display = 'none';
+            });
+            // Show selected calculator
+            document.getElementById(type).style.display = 'block';
+            
+            // Smooth scroll to the calculator
+            document.getElementById(type).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-IN', {
+                style: 'currency',
+                currency: 'INR'
+            }).format(amount);
+        }
+
+        function calculateCompoundInterest() {
+            const principal = parseFloat(document.getElementById('ci-principal').value);
+            const rate = parseFloat(document.getElementById('ci-rate').value);
+            const time = parseFloat(document.getElementById('ci-time').value);
+
+            if (!principal || !rate || !time) {
+                alert('Please fill all fields with valid numbers');
+                return;
+            }
+
+            const amount = principal * Math.pow(1 + rate/100, time);
+            const interest = amount - principal;
+
+            const result = document.getElementById('ci-result');
+            result.style.display = 'block';
+            result.innerHTML = `
+                <h3>Results:</h3>
+                <p>Principal Amount: ${formatCurrency(principal)}</p>
+                <p>Interest Earned: ${formatCurrency(interest)}</p>
+                <p>Total Amount: ${formatCurrency(amount)}</p>
+            `;
+        }
+
+        function calculateSIP() {
+            const investment = parseFloat(document.getElementById('sip-amount').value);
+            const rate = parseFloat(document.getElementById('sip-rate').value);
+            const time = parseFloat(document.getElementById('sip-time').value);
+
+            if (!investment || !rate || !time) {
+                alert('Please fill all fields with valid numbers');
+                return;
+            }
+
+            const monthlyRate = rate / (12 * 100);
+            const months = time * 12;
+            const futureValue = investment * (Math.pow(1 + monthlyRate, months) - 1) / monthlyRate * (1 + monthlyRate);
+
+            const result = document.getElementById('sip-result');
+            result.style.display = 'block';
+            result.innerHTML = `
+                <h3>Results:</h3>
+                <p>Monthly Investment: ${formatCurrency(investment)}</p>
+                <p>Total Investment: ${formatCurrency(investment * months)}</p>
+                <p>Expected Future Value: ${formatCurrency(futureValue)}</p>
+            `;
+        }
+
+        function calculateFD() {
+            const principal = parseFloat(document.getElementById('fd-principal').value);
+            const rate = parseFloat(document.getElementById('fd-rate').value);
+            const time = parseFloat(document.getElementById('fd-time').value);
+
+            if (!principal || !rate || !time) {
+                alert('Please fill all fields with valid numbers');
+                return;
+            }
+
+            const interest = (principal * rate * time) / 100;
+            const maturityAmount = principal + interest;
+
+            const result = document.getElementById('fd-result');
+            result.style.display = 'block';
+            result.innerHTML = `
+                <h3>Results:</h3>
+                <p>Principal Amount: ${formatCurrency(principal)}</p>
+                <p>Interest Earned: ${formatCurrency(interest)}</p>
+                <p>Maturity Amount: ${formatCurrency(maturityAmount)}</p>
+            `;
+        }
+
+        function calculateLoanEMI() {
+            const principal = parseFloat(document.getElementById('loan-amount').value);
+            const rate = parseFloat(document.getElementById('loan-rate').value);
+            const time = parseFloat(document.getElementById('loan-time').value);
+
+            if (!principal || !rate || !time) {
+                alert('Please fill all fields with valid numbers');
+                return;
+            }
+
+            const monthlyRate = rate / (12 * 100);
+            const months = time * 12;
+            const emi = principal * monthlyRate * Math.pow(1 + monthlyRate, months) / (Math.pow(1 + monthlyRate, months) - 1);
+            const totalPayment = emi * months;
+            const totalInterest = totalPayment - principal;
+
+            const result = document.getElementById('loan-result');
+            result.style.display = 'block';
+            result.innerHTML = `
+                <h3>Results:</h3>
+                <p>Loan Amount: ${formatCurrency(principal)}</p>
+                <p>Monthly EMI: ${formatCurrency(emi)}</p>
+                <p>Total Interest: ${formatCurrency(totalInterest)}</p>
+                <p>Total Payment: ${formatCurrency(totalPayment)}</p>
+            `;
+        }
+
+        function calculateMF() {
+            const investment = parseFloat(document.getElementById('mf-amount').value);
+            const rate = parseFloat(document.getElementById('mf-rate').value);
+            const time = parseFloat(document.getElementById('mf-time').value);
+
+            if (!investment || !rate || !time) {
+                alert('Please fill all fields with valid numbers');
+                return;
+            }
+
+            const futureValue = investment * Math.pow(1 + rate/100, time);
+            const totalReturns = futureValue - investment;
+
+            const result = document.getElementById('mf-result');
+            result.style.display = 'block';
+            result.innerHTML = `
+                <h3>Results:</h3>
+                <p>Investment Amount: ${formatCurrency(investment)}</p>
+                <p>Expected Returns: ${formatCurrency(totalReturns)}</p>
+                <p>Future Value: ${formatCurrency(futureValue)}</p>
+            `;
+        }
+
+        // Open a default calculator on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            showCalculator('compound');
+        });
+    </script>
+    <footer>
+        <p>© 2025 FinWise. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="{{ url_for('privacy') }}">Privacy Policy</a>
+            <a href="{{ url_for('terms') }}">Terms of Service</a>
+            <a href="{{ url_for('contact') }}">Contact Us</a>
+        </div>
+    </footer>
+</body>
+</html>

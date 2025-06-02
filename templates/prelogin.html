@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinWise - Your AI-Powered Financial Advisor</title>
+    <link rel="stylesheet" href="styles.css" >
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background-color: #f8fafc;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            color: #1e293b;
+        }
+
+        header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2563eb;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #64748b;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: #2563eb;
+        }
+
+        nav a.active {
+            color: #2563eb;
+        }
+
+        main {
+            flex: 1;
+            max-width: 1440px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 2rem;
+        }
+
+        #hero {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(150deg, #000, #2563eb);
+            border-radius: 24px;
+            margin-bottom: 3rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 800;
+        }
+
+        #hero p {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .cta-buttons {
+            margin-top: 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            border-radius: 9999px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s;
+            margin: 0 0.5rem;
+        }
+
+        .btn-primary {
+            background: white;
+            color: #2563eb;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .feature-section {
+            background: #eef2ff;
+            padding: 2rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-section h2 {
+            color: #2563eb;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-section p {
+            color: #475569;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 1.5rem;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .cta-button:hover {
+            background: linear-gradient(135deg, #1d4ed8, #2563eb);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .testimonials {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .testimonial {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .testimonial-content {
+            font-style: italic;
+            color: #475569;
+            margin-bottom: 1.5rem;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+
+        .testimonial-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #e2e8f0;
+            margin-right: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: #2563eb;
+        }
+
+        .testimonial-info h4 {
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .testimonial-info p {
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+
+        footer {
+            background-color: #132858;
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .footer-links {
+            margin-top: 1rem;
+        }
+
+        .footer-links a {
+            color: white;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            #hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            #hero p {
+                font-size: 1rem;
+            }
+            
+            .btn {
+                display: block;
+                margin: 0.5rem auto;
+                width: 80%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">FinWise</div>
+            <ul>
+                <li><a href="{{ url_for('index') }}">home</a></li>
+                <li><a href="{{ url_for('login_page') }}">Login</a></li>
+                <li><a href="{{ url_for('signup') }}">Sign Up</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero">
+            <h1>Welcome to FinWise</h1>
+            <p>Your AI-powered Financial Advisor and Budget Management Platform</p>
+            <div class="cta-buttons">
+                <a href="{{ url_for('signup') }}" class="btn btn-primary">Get Started Free</a>
+                <a href="{{ url_for('features') }}" class="btn btn-secondary">Learn More</a>
+            </div>
+        </section>
+
+        <section class="feature-section">
+            <h2>Take Control of Your Budget</h2>
+            <p>Set your budgets and track expenses effortlessly. Stay organized and make smarter financial decisions with ease.</p>
+            <a href="{{ url_for('signup') }}" class="cta-button">Set Budgets Now →</a>
+        </section>
+        
+        
+        <section class="feature-section">
+            <h2>Predict Stock Trends with AI</h2>
+            <p>Unsure about the next big stock move? Our AI-powered predictions analyze market trends to help you make informed investment decisions.</p>
+            <a href="{{ url_for('signup') }}" class="cta-button">Get Stock Predictions →</a>
+        </section>
+        
+
+        <section class="feature-section">
+            <h2>Need Financial Planning Help?</h2>
+            <p>Planning for retirement, a home purchase, or education costs? Our AI advisor helps create personalized roadmaps to reach your long-term financial goals.</p>
+            <a href="{{ url_for('signup') }}" class="cta-button">Start Financial Planning →</a>
+        </section>
+    </main>
+
+    
+    <footer>
+        <p>&copy; 2025 FinWise. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="{{ url_for('privacy') }}">Privacy Policy</a>
+            <a href="{{ url_for('terms') }}">Terms of Service</a>
+            <a href="{{ url_for('contact') }}">Contact Us</a>
+        </div>
+    </footer>
+</body>
+</html>

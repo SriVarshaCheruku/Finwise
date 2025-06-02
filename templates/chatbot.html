@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinWise - Financial Assistant</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background-color: #f8fafc;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            color: #1e293b;
+        }
+
+        header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2563eb;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #64748b;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: #2563eb;
+        }
+
+        nav a.active {
+            color: #2563eb;
+        }
+
+        main {
+            flex: 1;
+            max-width: 1440px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 2rem;
+        }
+
+        footer {
+            background: white;
+            padding: 2rem;
+            text-align: center;
+            color: #64748b;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .footer-links {
+            margin-top: 1rem;
+        }
+
+        .footer-links a {
+            margin: 0 1rem;
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        #chatbot-section {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 3rem;
+        }
+
+        .chatbot-container {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 900px;
+            overflow: hidden;
+        }
+
+        .chatbot-header {
+            background: linear-gradient(150deg, #000, #2563eb);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .chatbot-header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .chatbot-header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        #chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 500px;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 1rem;
+            border-radius: 16px;
+            line-height: 1.5;
+            position: relative;
+        }
+
+        .message.user {
+            align-self: flex-end;
+            background-color: #2563eb;
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message.bot {
+            align-self: flex-start;
+            background-color: #f1f5f9;
+            color: #1e293b;
+            border-bottom-left-radius: 4px;
+        }
+
+        .message-time {
+            font-size: 0.75rem;
+            opacity: 0.7;
+            margin-top: 0.5rem;
+            text-align: right;
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 1rem;
+            background-color: #f8fafc;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            margin-right: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .chat-input input:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+
+        .chat-input button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+
+        .chat-input button:hover {
+            background-color: #1d4ed8;
+        }
+
+        #common-questions {
+            margin-bottom: 3rem;
+        }
+
+        #common-questions h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1.75rem;
+            color: #1e293b;
+        }
+
+        .question-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .question-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .question-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+            color: #2563eb;
+        }
+
+        .question-card p {
+            color: #64748b;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 1024px) {
+            .question-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .chatbot-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .question-grid {
+                grid-template-columns: 1fr;
+            }
+
+            #chat-container {
+                height: 400px;
+            }
+
+            .message {
+                max-width: 90%;
+            }
+        }
+        footer {
+    background-color: #132858; 
+}
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">FinWise</div>
+            <ul>
+                <li><a href="{{ url_for('index') }}" class="active">Home</a></li>
+<li><a href="{{ url_for('budgets') }}">Expenses & Budgets</a></li>
+<li><a href="{{ url_for('reminders') }}">Bill Reminders</a></li>
+<li><a href="{{ url_for('calculators') }}">Calculators</a></li>
+<li><a href="{{ url_for('prediction') }}">Stock</a></li>
+
+                <li>
+                    <div class="user-profile">
+                        <div class="profile-image" id="profile-initial"></div>
+                        <span id="user-name"></span>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section id="chatbot-section">
+            <div class="chatbot-container">
+                <div class="chatbot-header">
+                    <h1>FinWise Financial Assistant</h1>
+                    <p>Get instant financial advice and insights</p>
+                </div>
+                <div id="chat-container">
+                    <div id="chat-messages" class="chat-messages">
+                        <div class="message bot">
+                            Hello! I'm your FinWise financial assistant. How can I help you today?
+                            <div class="message-time">Just now</div>
+                        </div>
+                    </div>
+                    <div class="chat-input">
+                        <input type="text" id="user-message" placeholder="Ask a financial question...">
+                        <button id="send-message">Send</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="common-questions">
+            <h2>Common Financial Questions</h2>
+            <div class="question-grid">
+                <div class="question-card">
+                    <h3>Why Should I Invest?</h3>
+                    <p>Learn about the benefits of investing for long-term financial growth and how to get started with different investment options.</p>
+                </div>
+                <div class="question-card">
+                    <h3>How to Create a Budget?</h3>
+                    <p>Discover strategies for effective budget management and tips to track your expenses more efficiently.</p>
+                </div>
+                <div class="question-card">
+                    <h3>Understanding Savings</h3>
+                    <p>Explore ways to optimize your savings and reach financial goals through emergency funds and savings accounts.</p>
+                </div>
+                <div class="question-card">
+                    <h3>Debt Management</h3>
+                    <p>Learn effective strategies for managing and reducing your debt to improve your financial health.</p>
+                </div>
+                <div class="question-card">
+                    <h3>Retirement Planning</h3>
+                    <p>Get insights on planning for retirement and understanding different retirement account options.</p>
+                </div>
+                <div class="question-card">
+                    <h3>Improving Credit Score</h3>
+                    <p>Discover practical steps to improve your credit score and maintain good credit health.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 FinWise. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="{{ url_for('privacy') }}">Privacy Policy</a>
+<a href="{{ url_for('terms') }}">Terms of Service</a>
+<a href="{{ url_for('contact') }}">Contact Us</a>
+
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+    const chatMessages = document.getElementById('chat-messages');
+    const userMessageInput = document.getElementById('user-message');
+    const sendMessageButton = document.getElementById('send-message');
+    const questionCards = document.querySelectorAll('.question-card');
+
+    function addMessage(message, isUser) {
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('message', isUser ? 'user' : 'bot');
+
+        messageDiv.innerHTML = message; 
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    async function sendMessage() {
+        const userMessage = userMessageInput.value.trim();
+        if (!userMessage) return;
+
+        addMessage(`<strong>You:</strong> ${userMessage}`, true);
+        userMessageInput.value = '';
+
+        try {
+            const response = await fetch('/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: userMessage })
+            });
+
+            const data = await response.json();
+            addMessage(`<strong>Finwise:</strong> ${data.reply}`, false);
+        } catch (error) {
+            console.error("Error communicating with server:", error);
+            addMessage("<strong>Assistant:</strong> ⚠️ Unable to process your request at the moment. Please try again later.", false);
+        }
+    }
+
+
+    sendMessageButton.addEventListener('click', sendMessage);
+
+    userMessageInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') sendMessage();
+    });
+
+    questionCards.forEach(card => {
+        card.addEventListener('click', function() {
+            userMessageInput.value = this.querySelector('h3').textContent;
+            sendMessage();
+        });
+    });
+});
+
+    </script>
+    
+</body>
+</html>
