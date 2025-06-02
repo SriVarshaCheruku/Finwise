@@ -48,15 +48,18 @@ Clone the repository: git clone https://github.com/RajanRoshini31/finwise.git cd
 
 ## 📁 Project Structure
 
-├── app.py # Main application entry point 
-├── backend/ # Backend logic and utilities
-│ ├── login.py
-│ ├── predict.py
-│ └── ... # Additional backend Python files
-├── templated/ # HTML templates for the frontend
-│ ├── index.html
-│ ├── login.html
-│ └── ... # Additional HTML template files
+### 📁 Project Structure
+
+```text
+├── app.py                  # Main application entry point  
+├── backend/                # Backend logic and utilities  
+│   ├── login.py  
+│   ├── predict.py  
+│   └── ...                 # Additional backend Python files  
+├── templates/              # HTML templates for the frontend  
+│   ├── index.html  
+│   ├── login.html  
+│   └── ...                 # Additional HTML files  
 
 🚀 How to Run Locally
 
