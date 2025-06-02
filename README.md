@@ -61,7 +61,7 @@ Budget and Bill Reminder Tools
 🚀 How to Run Locally
 
 Clone the repository:
-git clone https://github.com/Sri_Varsha__/Finwise.git
+git clone https://github.com/SriVarshaCheruku/Finwise.git
 cd finwise
 Install Python dependencies:
 pip install -r requirements.txt
