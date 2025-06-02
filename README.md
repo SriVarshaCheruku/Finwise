@@ -42,11 +42,8 @@ Stock Prediction with News Headlines
 <img width="1440" alt="Screenshot 2025-06-02 at 9 56 26 PM" src="https://github.com/user-attachments/assets/e64d4ce0-98b9-4682-9bf5-bbccf48a1163" />
 Budget and Bill Reminder Tools
 ![Screenshot 2025-06-02 at 9 57 12 PM](https://github.com/user-attachments/assets/575e0b7a-c3bf-4ba3-86bb-958d478cf5f9)
+
 🚀 How to Run Locally
-
-Clone the repository: git clone https://github.com/RajanRoshini31/finwise.git cd finwise
-
-## 📁 Project Structure
 
 ### 📁 Project Structure
 
@@ -64,7 +61,7 @@ Clone the repository: git clone https://github.com/RajanRoshini31/finwise.git cd
 🚀 How to Run Locally
 
 Clone the repository:
-git clone https://github.com/your-username/Finwise.git
+git clone https://github.com/Sri_Varsha__/Finwise.git
 cd finwise
 Install Python dependencies:
 pip install -r requirements.txt
