@@ -43,6 +43,17 @@ Stock Prediction with News Headlines
 Budget and Bill Reminder Tools
 ![Screenshot 2025-06-02 at 9 57 12 PM](https://github.com/user-attachments/assets/575e0b7a-c3bf-4ba3-86bb-958d478cf5f9)
 
+## 📁 Project Structure
+├── app.py # Main application entry point 
+├── backend/ # Backend logic and utilities
+│ ├── login.py
+│ ├── predict.py
+│ └── ... # Additional backend Python files
+├── templated/ # HTML templates for the frontend
+│ ├── index.html
+│ ├── login.html
+│ └── ... # Additional HTML template files
+
 🚀 How to Run Locally
 
 Clone the repository:
