@@ -22,7 +22,7 @@ def contact():
             msg.set_content(f"From: {name} <{email}>\n\n{message}")
 
             with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
-                smtp.login('finwise.org@gmail.com', 'upuu pgff qotl vqvu')  # Replace securely
+                smtp.login('finwise.org@gmail.com', 'app_password')  # Replace securely
                 smtp.send_message(msg)
 
             flash('Message sent successfully!', 'success')
