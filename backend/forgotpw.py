@@ -6,7 +6,7 @@ import hashlib
 from pymongo import MongoClient
 
 # MongoDB Connection
-MONGO_URI = "mongodb+srv://saahosan3:tSMiuQ1MlMBPNdAS@cluster0.ux4ex.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+MONGO_URI = "your_MONGO_URI"
 client = MongoClient(MONGO_URI)
 db = client['finwise_db']
 users_collection = db['users']
@@ -50,7 +50,7 @@ def send_otp():
         msg.set_content(f'Your verification code is: {otp}')
 
         with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
-            smtp.login('finwise.org@gmail.com', 'upuu pgff qotl vqvu')  # Replace with your actual app password
+            smtp.login('finwise.org@gmail.com', 'app_password')  # Replace with your actual app password
             smtp.send_message(msg)
 
         return jsonify({'success': True, 'message': 'OTP sent to your email'})
@@ -107,4 +107,3 @@ def reset_password():
         return jsonify({'success': True, 'message': 'Password reset successfully'})
     else:
         return jsonify({'success': False, 'message': 'Failed to update password or email not found'}), 404
-
