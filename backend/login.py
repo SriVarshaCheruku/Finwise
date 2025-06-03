@@ -3,7 +3,7 @@ from pymongo import MongoClient
 import hashlib  # To use sha256 for password hashing
 
 # MongoDB Connection
-MONGO_URI = "mongodb+srv://saahosan3:tSMiuQ1MlMBPNdAS@cluster0.ux4ex.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+MONGO_URI = "YOUR_MONGO_URI"
 client = MongoClient(MONGO_URI)
 db = client['finwise_db']
 users_collection = db['users']
