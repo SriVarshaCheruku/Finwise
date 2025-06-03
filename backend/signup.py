@@ -6,7 +6,7 @@ import smtplib
 from email.message import EmailMessage
 
 # MongoDB Connection
-MONGO_URI = "mongodb+srv://saahosan3:tSMiuQ1MlMBPNdAS@cluster0.ux4ex.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+MONGO_URI = "YOUR_MONGO_URI"
 client = MongoClient(MONGO_URI)
 db = client['finwise_db']
 users_collection = db['users']
@@ -19,7 +19,7 @@ signup_otp_store = {}
 
 # Email configuration
 EMAIL_ADDRESS = 'finwise.org@gmail.com'
-EMAIL_PASSWORD = 'upuu pgff qotl vqvu'  # Replace with your actual app password
+EMAIL_PASSWORD = 'app_password  # Replace with your actual app password
 
 # Hash password
 def hash_password(password):
