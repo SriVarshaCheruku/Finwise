@@ -3,13 +3,14 @@ import google.generativeai as genai
 import re
 
 # Configure Gemini API
-genai.configure(api_key="AIzaSyBViHQL8wjFvbNnQV1UVzhzjzYpBqC7apA")
+genai.configure(api_key="your_API_key")
 
 # Create Flask Blueprint
 chatbot_bp = Blueprint('chatbot', __name__)
 
 # Chat messages for context
 messages = [{"role": "system", "content": "You are an expert financial assistant with deep knowledge of investments, budgeting, and risk management. Your responses should be highly detailed, incorporating relevant symbols (%, $, ₹, €), numerical measures, and critical financial warnings or cautions where necessary. Always provide structured insights, highlight important points with bullet points, and emphasize risks with cautionary symbols (⚠️) to help users make well-informed financial decisions.If a question is unrelated to finance, politely refuse to answer."}]
+
 
 def format_text(text: str) -> str:
     """Formats generated text with HTML structure."""
@@ -22,7 +23,6 @@ def format_text(text: str) -> str:
     return text
 
 # Route to render chatbot page
-
 # @chatbot_bp.route("/chatbot")
 # def chatbot_page():
 #     return render_template("chatbot.html")
